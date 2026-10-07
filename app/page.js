@@ -1,9 +1,12 @@
 import Navbar from "@/components/Navbar";
+import PriceTicker from "@/components/PriceTicker";
 
 export default function Home() {
   return (
     <>
       <Navbar />
+
+      <PriceTicker />
 
       <main className="min-h-screen">
         <section className="mx-auto flex min-h-[70vh] max-w-6xl items-center justify-center px-4 py-12">
