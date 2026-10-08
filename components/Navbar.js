@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const categories = [
   { name: "সব", href: "/" },
@@ -15,12 +16,17 @@ const categories = [
 
 export default function Navbar() {
   const pathname = usePathname();
+  const [banglaDate, setBanglaDate] = useState("");
 
-  const banglaDate = new Intl.DateTimeFormat("bn-BD", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  }).format(new Date());
+  useEffect(() => {
+    const date = new Intl.DateTimeFormat("bn-BD", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    }).format(new Date());
+
+    setBanglaDate(date);
+  }, []);
 
   return (
     <header className="border-b border-gray-200 bg-white">
@@ -42,7 +48,9 @@ export default function Navbar() {
                 বাজার দর
               </h1>
 
-              <p className="mt-0.5 text-xs text-gray-500">{banglaDate}</p>
+              <p className="mt-0.5 min-h-4 text-xs text-gray-500">
+                {banglaDate}
+              </p>
             </div>
           </Link>
 

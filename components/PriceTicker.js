@@ -25,7 +25,8 @@ export default async function PriceTicker() {
     <div className="overflow-hidden border-b border-gray-200 bg-gray-50">
       <div className="ticker-track flex w-max">
         {tickerItems.map((product, index) => {
-          const isUp = Number(product.change) > 0;
+          const isUp = product.changeDirection === "up";
+          const isDown = product.changeDirection === "down";
 
           return (
             <div
@@ -43,17 +44,26 @@ export default async function PriceTicker() {
               </span>
 
               <span className="text-gray-500">
-                / {product.unit}
+                / {product.unitBn}
               </span>
 
-              <span
-                className={`font-semibold ${
-                  isUp ? "text-red-600" : "text-green-600"
-                }`}
-              >
-                {isUp ? "▲" : "▼"}{" "}
-                {toBanglaNumber(Math.abs(Number(product.change)))}
-              </span>
+              {isUp && (
+                <span className="font-semibold text-red-600">
+                  ▲ {toBanglaNumber(Math.abs(product.change))}%
+                </span>
+              )}
+
+              {isDown && (
+                <span className="font-semibold text-green-600">
+                  ▼ {toBanglaNumber(Math.abs(product.change))}%
+                </span>
+              )}
+
+              {!isUp && !isDown && (
+                <span className="font-semibold text-gray-500">
+                  অপরিবর্তিত
+                </span>
+              )}
             </div>
           );
         })}

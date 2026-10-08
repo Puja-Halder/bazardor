@@ -13,12 +13,12 @@ export default function ProductCard({ product }) {
 
   return (
     <Link
-      href={`/product/${product.slug || product.id}`}
+      href={`/product/${product.slug}`}
       className="group block rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:border-green-200 hover:shadow-md"
     >
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-green-50 text-2xl">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-green-50 text-2xl">
             {product.emoji}
           </div>
 
@@ -28,25 +28,25 @@ export default function ProductCard({ product }) {
             </h3>
 
             <p className="mt-1 text-sm text-gray-500">
-              প্রতি {product.unit}
+              প্রতি {product.unitBn}
             </p>
           </div>
         </div>
 
         {isUp && (
-          <span className="rounded-full bg-red-50 px-2.5 py-1 text-xs font-semibold text-red-600">
-            ▲ {toBanglaNumber(Math.abs(change))}
+          <span className="shrink-0 rounded-full bg-red-50 px-2.5 py-1 text-xs font-semibold text-red-600">
+            ▲ {toBanglaNumber(Math.abs(change))}%
           </span>
         )}
 
         {isDown && (
-          <span className="rounded-full bg-green-50 px-2.5 py-1 text-xs font-semibold text-green-600">
-            ▼ {toBanglaNumber(Math.abs(change))}
+          <span className="shrink-0 rounded-full bg-green-50 px-2.5 py-1 text-xs font-semibold text-green-600">
+            ▼ {toBanglaNumber(Math.abs(change))}%
           </span>
         )}
 
         {!isUp && !isDown && (
-          <span className="rounded-full bg-gray-100 px-2.5 py-1 text-xs font-semibold text-gray-600">
+          <span className="shrink-0 rounded-full bg-gray-100 px-2.5 py-1 text-xs font-semibold text-gray-600">
             অপরিবর্তিত
           </span>
         )}
