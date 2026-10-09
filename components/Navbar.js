@@ -1,8 +1,9 @@
+
 "use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 const categories = [
   { name: "সব", href: "/" },
@@ -14,7 +15,7 @@ const categories = [
   { name: "ডিম", href: "/category/dim" },
 ];
 
-export default function Navbar() {
+function NavbarContent() {
   const pathname = usePathname();
   const [banglaDate, setBanglaDate] = useState("");
 
@@ -98,5 +99,19 @@ export default function Navbar() {
         </div>
       </div>
     </header>
+  );
+}
+
+export default function Navbar() {
+  return (
+    <Suspense
+      fallback={
+        <header className="border-b border-gray-200 bg-white">
+          <div className="mx-auto h-20 max-w-6xl px-4" />
+        </header>
+      }
+    >
+      <NavbarContent />
+    </Suspense>
   );
 }
