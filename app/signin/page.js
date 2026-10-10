@@ -2,22 +2,48 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { toast } from "react-toastify";
+import { authClient } from "@/lib/auth-client";
 
 export default function SignInPage() {
-  function handleSubmit(event) {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+
+  async function handleSubmit(event) {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
-    const email = formData.get("email");
-    const password = formData.get("password");
+    const email = String(formData.get("email") || "").trim();
+    const password = String(formData.get("password") || "");
 
     if (!email || !password) {
       toast.error("ইমেইল ও পাসওয়ার্ড লিখুন।");
       return;
     }
 
-    toast.info("সাইন ইন সুবিধাটি এখনো সংযুক্ত করা হয়নি।");
+    setIsLoading(true);
+
+    try {
+      const { error } = await authClient.signIn.email({
+        email,
+        password,
+      });
+
+      if (error) {
+        toast.error(error.message || "সাইন ইন করা যায়নি।");
+        return;
+      }
+
+      toast.success("সফলভাবে সাইন ইন হয়েছে!");
+      router.push("/");
+      router.refresh();
+    } catch {
+      toast.error("একটি সমস্যা হয়েছে। আবার চেষ্টা করুন।");
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -27,9 +53,7 @@ export default function SignInPage() {
           <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-green-50 text-2xl">
             🛒
           </span>
-          <span className="text-2xl font-bold text-gray-900">
-            বাজার দর
-          </span>
+          <span className="text-2xl font-bold text-gray-900">বাজার দর</span>
         </Link>
 
         <div className="mt-8 text-center">
@@ -43,7 +67,10 @@ export default function SignInPage() {
 
         <form onSubmit={handleSubmit} className="mt-8 space-y-5">
           <div>
-            <label htmlFor="email" className="mb-2 block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="email"
+              className="mb-2 block text-sm font-medium text-gray-700"
+            >
               ইমেইল ঠিকানা
             </label>
             <input
@@ -58,7 +85,10 @@ export default function SignInPage() {
           </div>
 
           <div>
-            <label htmlFor="password" className="mb-2 block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="password"
+              className="mb-2 block text-sm font-medium text-gray-700"
+            >
               পাসওয়ার্ড
             </label>
             <input
@@ -74,20 +104,27 @@ export default function SignInPage() {
 
           <button
             type="submit"
-            className="w-full rounded-xl bg-green-700 px-4 py-3 font-semibold text-white transition hover:bg-green-800"
+            disabled={isLoading}
+            className="w-full rounded-xl bg-green-700 px-4 py-3 font-semibold text-white transition hover:bg-green-800 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            সাইন ইন
+            {isLoading ? "সাইন ইন হচ্ছে..." : "সাইন ইন"}
           </button>
         </form>
 
         <p className="mt-6 text-center text-sm text-gray-600">
           অ্যাকাউন্ট নেই?{" "}
-          <Link href="/signup" className="font-semibold text-green-700 hover:text-green-800">
+          <Link
+            href="/signup"
+            className="font-semibold text-green-700 hover:text-green-800"
+          >
             সাইন আপ করুন
           </Link>
         </p>
 
-        <Link href="/" className="mt-5 block text-center text-sm text-gray-500 hover:text-green-700">
+        <Link
+          href="/"
+          className="mt-5 block text-center text-sm text-gray-500 hover:text-green-700"
+        >
           ← হোম পেজে ফিরে যান
         </Link>
       </section>

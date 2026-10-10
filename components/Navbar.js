@@ -2,8 +2,10 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { authClient } from "@/lib/auth-client";
 
 const categories = [
   { name: "সব", href: "/" },
@@ -17,7 +19,10 @@ const categories = [
 
 function NavbarContent() {
   const pathname = usePathname();
+  const router = useRouter();
   const [banglaDate, setBanglaDate] = useState("");
+  const [isSigningOut, setIsSigningOut] = useState(false);
+  const { data: session, isPending } = authClient.useSession();
 
   useEffect(() => {
     const date = new Intl.DateTimeFormat("bn-BD", {
@@ -28,6 +33,27 @@ function NavbarContent() {
 
     setBanglaDate(date);
   }, []);
+
+  async function handleSignOut() {
+    setIsSigningOut(true);
+
+    try {
+      const { error } = await authClient.signOut();
+
+      if (error) {
+        toast.error("সাইন আউট করা যায়নি। আবার চেষ্টা করুন।");
+        return;
+      }
+
+      toast.success("সফলভাবে সাইন আউট হয়েছে।");
+      router.push("/");
+      router.refresh();
+    } catch {
+      toast.error("একটি সমস্যা হয়েছে। আবার চেষ্টা করুন।");
+    } finally {
+      setIsSigningOut(false);
+    }
+  }
 
   return (
     <header className="border-b border-gray-200 bg-white">
@@ -43,12 +69,10 @@ function NavbarContent() {
               alt="বাজার দর লোগো"
               className="h-11 w-11 rounded-xl object-cover"
             />
-
             <div>
               <h1 className="text-xl font-bold text-gray-900 sm:text-2xl">
                 বাজার দর
               </h1>
-
               <p className="mt-0.5 min-h-4 text-xs text-gray-500">
                 {banglaDate}
               </p>
@@ -81,20 +105,45 @@ function NavbarContent() {
             </ul>
           </nav>
 
-          <div className="order-2 flex items-center gap-2 lg:order-3">
-            <Link
-              href="/signin"
-              className="rounded-lg border border-gray-300 px-3 py-2 text-sm font-medium text-gray-700 transition hover:border-green-700 hover:text-green-700 sm:px-4"
-            >
-              সাইন ইন
-            </Link>
-
-            <Link
-              href="/signup"
-              className="rounded-lg bg-green-700 px-3 py-2 text-sm font-medium text-white transition hover:bg-green-800 sm:px-4"
-            >
-              সাইন আপ
-            </Link>
+          <div className="order-2 flex flex-wrap items-center gap-2 lg:order-3">
+            {!isPending && session?.user ? (
+              <>
+                <span className="max-w-32 truncate text-sm font-medium text-gray-700">
+                  {session.user.name || session.user.email}
+                </span>
+                <Link
+                  href="/profile"
+                  className="rounded-lg border border-gray-300 px-3 py-2 text-sm font-medium text-gray-700 transition hover:border-green-700 hover:text-green-700 sm:px-4"
+                >
+                  প্রোফাইল
+                </Link>
+                <button
+                  type="button"
+                  onClick={handleSignOut}
+                  disabled={isSigningOut}
+                  className="rounded-lg bg-green-700 px-3 py-2 text-sm font-medium text-white transition hover:bg-green-800 disabled:opacity-60 sm:px-4"
+                >
+                  {isSigningOut ? "অপেক্ষা করুন..." : "সাইন আউট"}
+                </button>
+              </>
+            ) : !isPending ? (
+              <>
+                <Link
+                  href="/signin"
+                  className="rounded-lg border border-gray-300 px-3 py-2 text-sm font-medium text-gray-700 transition hover:border-green-700 hover:text-green-700 sm:px-4"
+                >
+                  সাইন ইন
+                </Link>
+                <Link
+                  href="/signup"
+                  className="rounded-lg bg-green-700 px-3 py-2 text-sm font-medium text-white transition hover:bg-green-800 sm:px-4"
+                >
+                  সাইন আপ
+                </Link>
+              </>
+            ) : (
+              <span className="text-sm text-gray-500">লোড হচ্ছে...</span>
+            )}
           </div>
         </div>
       </div>

@@ -2,28 +2,55 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import { authClient } from "@/lib/auth-client";
+import { useState } from "react";
 
 export default function SignUpPage() {
-  function handleSubmit(event) {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+
+  async function handleSubmit(event) {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
-    const name = formData.get("name");
-    const email = formData.get("email");
-    const password = formData.get("password");
+    const name = String(formData.get("name") || "").trim();
+    const email = String(formData.get("email") || "").trim();
+    const password = String(formData.get("password") || "");
 
     if (!name || !email || !password) {
       toast.error("সবগুলো ঘর পূরণ করুন।");
       return;
     }
 
-    if (String(password).length < 8) {
+    if (password.length < 8) {
       toast.error("পাসওয়ার্ড কমপক্ষে ৮ অক্ষরের হতে হবে।");
       return;
     }
 
-    toast.info("অ্যাকাউন্ট তৈরি করার সুবিধাটি এখনো সংযুক্ত করা হয়নি।");
+    setIsLoading(true);
+
+    try {
+      const { error } = await authClient.signUp.email({
+        name,
+        email,
+        password,
+      });
+
+      if (error) {
+        toast.error(error.message || "অ্যাকাউন্ট তৈরি করা যায়নি।");
+        return;
+      }
+
+      toast.success("আপনার অ্যাকাউন্ট তৈরি হয়েছে!");
+      router.push("/");
+      router.refresh();
+    } catch {
+      toast.error("একটি সমস্যা হয়েছে। আবার চেষ্টা করুন।");
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -33,9 +60,7 @@ export default function SignUpPage() {
           <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-green-50 text-2xl">
             🛒
           </span>
-          <span className="text-2xl font-bold text-gray-900">
-            বাজার দর
-          </span>
+          <span className="text-2xl font-bold text-gray-900">বাজার দর</span>
         </Link>
 
         <div className="mt-8 text-center">
@@ -49,7 +74,10 @@ export default function SignUpPage() {
 
         <form onSubmit={handleSubmit} className="mt-8 space-y-5">
           <div>
-            <label htmlFor="name" className="mb-2 block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="name"
+              className="mb-2 block text-sm font-medium text-gray-700"
+            >
               আপনার নাম
             </label>
             <input
@@ -64,7 +92,10 @@ export default function SignUpPage() {
           </div>
 
           <div>
-            <label htmlFor="email" className="mb-2 block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="email"
+              className="mb-2 block text-sm font-medium text-gray-700"
+            >
               ইমেইল ঠিকানা
             </label>
             <input
@@ -79,7 +110,10 @@ export default function SignUpPage() {
           </div>
 
           <div>
-            <label htmlFor="password" className="mb-2 block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="password"
+              className="mb-2 block text-sm font-medium text-gray-700"
+            >
               পাসওয়ার্ড
             </label>
             <input
@@ -96,20 +130,27 @@ export default function SignUpPage() {
 
           <button
             type="submit"
-            className="w-full rounded-xl bg-green-700 px-4 py-3 font-semibold text-white transition hover:bg-green-800"
+            disabled={isLoading}
+            className="w-full rounded-xl bg-green-700 px-4 py-3 font-semibold text-white transition hover:bg-green-800 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            অ্যাকাউন্ট তৈরি করুন
+            {isLoading ? "অ্যাকাউন্ট তৈরি হচ্ছে..." : "অ্যাকাউন্ট তৈরি করুন"}
           </button>
         </form>
 
         <p className="mt-6 text-center text-sm text-gray-600">
           আগে থেকেই অ্যাকাউন্ট আছে?{" "}
-          <Link href="/signin" className="font-semibold text-green-700 hover:text-green-800">
+          <Link
+            href="/signin"
+            className="font-semibold text-green-700 hover:text-green-800"
+          >
             সাইন ইন করুন
           </Link>
         </p>
 
-        <Link href="/" className="mt-5 block text-center text-sm text-gray-500 hover:text-green-700">
+        <Link
+          href="/"
+          className="mt-5 block text-center text-sm text-gray-500 hover:text-green-700"
+        >
           ← হোম পেজে ফিরে যান
         </Link>
       </section>
