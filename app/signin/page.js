@@ -1,7 +1,25 @@
 
+"use client";
+
 import Link from "next/link";
+import { toast } from "react-toastify";
 
 export default function SignInPage() {
+  function handleSubmit(event) {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+    const email = formData.get("email");
+    const password = formData.get("password");
+
+    if (!email || !password) {
+      toast.error("ইমেইল ও পাসওয়ার্ড লিখুন।");
+      return;
+    }
+
+    toast.info("সাইন ইন সুবিধাটি এখনো সংযুক্ত করা হয়নি।");
+  }
+
   return (
     <main className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12">
       <section className="w-full max-w-md rounded-3xl border border-gray-200 bg-white p-6 shadow-sm sm:p-8">
@@ -23,12 +41,9 @@ export default function SignInPage() {
           </p>
         </div>
 
-        <form className="mt-8 space-y-5">
+        <form onSubmit={handleSubmit} className="mt-8 space-y-5">
           <div>
-            <label
-              htmlFor="email"
-              className="mb-2 block text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="email" className="mb-2 block text-sm font-medium text-gray-700">
               ইমেইল ঠিকানা
             </label>
             <input
@@ -43,10 +58,7 @@ export default function SignInPage() {
           </div>
 
           <div>
-            <label
-              htmlFor="password"
-              className="mb-2 block text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="password" className="mb-2 block text-sm font-medium text-gray-700">
               পাসওয়ার্ড
             </label>
             <input
@@ -70,18 +82,12 @@ export default function SignInPage() {
 
         <p className="mt-6 text-center text-sm text-gray-600">
           অ্যাকাউন্ট নেই?{" "}
-          <Link
-            href="/signup"
-            className="font-semibold text-green-700 hover:text-green-800"
-          >
+          <Link href="/signup" className="font-semibold text-green-700 hover:text-green-800">
             সাইন আপ করুন
           </Link>
         </p>
 
-        <Link
-          href="/"
-          className="mt-5 block text-center text-sm text-gray-500 hover:text-green-700"
-        >
+        <Link href="/" className="mt-5 block text-center text-sm text-gray-500 hover:text-green-700">
           ← হোম পেজে ফিরে যান
         </Link>
       </section>

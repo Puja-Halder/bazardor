@@ -1,4 +1,6 @@
+
 import "./globals.css";
+import ToastProvider from "@/components/ToastProvider";
 
 export const metadata = {
   title: "বাজার দর | BazarDor",
@@ -8,7 +10,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="bn">
-      <body>{children}</body>
+      <body>
+        <ToastProvider />
+        {children}
+      </body>
     </html>
   );
 }
