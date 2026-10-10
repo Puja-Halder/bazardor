@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from "next/link";
@@ -68,20 +67,18 @@ export default function Footer() {
             পাওয়ার একটি সুবিধাজনক অভিজ্ঞতা তৈরি করা।
           </p>
 
-          <Link
-            href="/"
+          <a
+            href="/#সব-পণ্য"
             className="mt-3 inline-block text-sm font-semibold text-green-700 hover:text-green-800"
           >
             সব পণ্য দেখুন →
-          </Link>
+          </a>
         </div>
       </div>
 
       <div className="border-t border-gray-200">
         <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-5 text-sm text-gray-500 sm:flex-row sm:items-center sm:justify-between">
-          <p>
-            © {year} বাজার দর (BazarDor)
-          </p>
+          <p>© {year} বাজার দর (BazarDor)</p>
           <p>সবার জন্য সহজ বাজারদর</p>
         </div>
       </div>

@@ -1,36 +1,84 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# বাজার দর (BazarDor)
+
+**বাজার দর** is a Bengali market price tracking website that helps users explore the latest prices of essential products and compare prices across different markets in Bangladesh.
+
+## Features
+
+- **Live Market Price Display:** Browse product prices and price changes.
+- **Price Trend Sections:** Explore products with rising and falling prices.
+- **Product Details:** View historical prices and market-wise price information.
+- **Category Filtering:** Browse products by category, such as rice, lentils, vegetables, fish, and meat.
+- **Price Sorting:** Sort products from lowest to highest price or highest to lowest price.
+- **User Authentication:** Register, sign in, and sign out using Better Auth.
+- **Profile Management:** View and update your profile name.
+- **Responsive Design:** Use the website on mobile, tablet, and desktop screens.
+
+## Technologies Used
+
+- Next.js
+- React
+- JavaScript
+- Tailwind CSS
+- Better Auth
+- SQLite with better-sqlite3
+- React Toastify
+- REST API
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+Install Node.js and npm before running the project.
+
+### Installation
+
+1. Clone the repository after it has been published to GitHub:
+
+   ```bash
+   git clone YOUR_GITHUB_REPOSITORY_URL
+   ```
+
+2. Navigate to the project folder:
+
+   ```bash
+   cd bazardor
+   ```
+
+3. Install the dependencies:
+
+   ```bash
+   npm install
+   ```
+
+4. Configure the required environment variables in `.env.local`. Never commit secrets or private environment values to GitHub.
+
+5. Start the development server:
+
+   ```bash
+   npm run dev
+   ```
+
+6. Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## Production Build
+
+Check the production build with:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Project Structure
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+- `app/` — Pages, layouts, API routes, and loading states.
+- `components/` — Reusable interface components.
+- `lib/` — API integration and authentication configuration.
+- `public/` — Static images and other public assets.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Important Note
 
-## Learn More
+Product prices depend on the connected API and may change according to market conditions. Authentication and deployment require the appropriate configuration.
 
-To learn more about Next.js, take a look at the following resources:
+## Author
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Developed as a web development project using Next.js and Better Auth.

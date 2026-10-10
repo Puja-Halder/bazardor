@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 
 export default function Hero() {
   return (
@@ -23,12 +22,12 @@ export default function Hero() {
           </p>
 
           <div className="mt-8">
-            <Link
+            <a
               href="#সব-পণ্য"
               className="inline-flex items-center rounded-xl bg-green-700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-green-800"
             >
               সব পণ্যের দাম দেখুন
-            </Link>
+            </a>
           </div>
         </div>
 
