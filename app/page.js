@@ -1,8 +1,10 @@
+
 import Navbar from "@/components/Navbar";
 import PriceTicker from "@/components/PriceTicker";
 import Hero from "@/components/Hero";
 import ProductGrid from "@/components/ProductGrid";
 import ProductSection from "@/components/ProductSection";
+import Footer from "@/components/Footer";
 import { getProducts } from "@/lib/api";
 
 export default async function Home() {
@@ -27,7 +29,6 @@ export default async function Home() {
   return (
     <>
       <Navbar />
-
       <PriceTicker />
 
       <main>
@@ -68,6 +69,8 @@ export default async function Home() {
           <ProductGrid products={products} />
         </section>
       </main>
+
+      <Footer />
     </>
   );
 }
